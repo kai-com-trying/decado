@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const apiKey = process.env.REACT_APP_POLYGON_API_KEY;
+const apiKey = import.meta.env.VITE_POLYGON_API_KEY;
 
 const initialState = {
   searchQuery: '',
@@ -11,15 +11,15 @@ const initialState = {
 };
 
 export const fetchSearchResults = createAsyncThunk(
-    'search/fetchSearchResults',
-    async (searchQuery, { rejectWithValue }) => {
-        try {
-        const response = await axios.get(`https://api.polygon.io/v2/reference/tickers?sort=ticker&perpage=5&page=1&search=${searchQuery}&apiKey=${apiKey}`);
-        return response.data.results;
-        } catch (error) {
-        return rejectWithValue(error.response.data);
-        }
+  'search/fetchSearchResults',
+  async (searchQuery, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`https://api.polygon.io/v2/reference/tickers?sort=ticker&perpage=5&page=1&search=${searchQuery}&apiKey=${apiKey}`);
+      return response.data.results;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
+  }
 );
 
 const searchSlice = createSlice({
@@ -30,22 +30,23 @@ const searchSlice = createSlice({
       state.searchQuery = action.payload;
     },
   },
-  extraReducers: {
-    [fetchSearchResults.pending]: (state) => {
-      state.loading = true;
-      state.error = false;
-    },
-    [fetchSearchResults.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.searchResults = action.payload;
-      state.error = false;
-    },
-    [fetchSearchResults.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = true;
-    },
-  }
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchSearchResults.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(fetchSearchResults.fulfilled, (state, action) => {
+        state.loading = false;
+        state.searchResults = action.payload;
+        state.error = false;
+      })
+      .addCase(fetchSearchResults.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      });
+  },
 });
 
-export const { setSearchQuery, setSearchResults } = searchSlice.actions;
+export const { setSearchQuery } = searchSlice.actions;
 export default searchSlice.reducer;

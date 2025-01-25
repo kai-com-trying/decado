@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const apiKey = process.env.REACT_APP_POLYGON_API_KEY;
+const apiKey = import.meta.env.VITE_POLYGON_API_KEY;
 
 const initialState = {
     stocks: [],
@@ -11,7 +11,7 @@ const initialState = {
 
 export const fetchStocks = createAsyncThunk(
     'stocks/fetchStocks',
-    async (_, { rejectWithValue }) => {
+    async (symbol, { rejectWithValue }) => {
         try {
             const response = await axios.get(`https://api.polygon.io/v2/aggs/ticker/${symbol}/prev?apiKey=${apiKey}`);
             return response.data;
@@ -24,20 +24,21 @@ export const fetchStocks = createAsyncThunk(
 const singleStocksSlice = createSlice({
     name: 'stocks',
     initialState,
-    extraReducers: {
-        [fetchStocks.pending]: (state) => {
-            state.loading = true;
-            state.error = false; // Set error to false when loading
-        },
-        [fetchStocks.fulfilled]: (state, action) => {
-            state.loading = false;
-            state.stocks = action.payload;
-            state.error = false; // Set error to false when successful
-        },
-        [fetchStocks.rejected]: (state, action) => {
-            state.loading = false;
-            state.error = true; // Set error to true when failed
-        },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchStocks.pending, (state) => {
+                state.loading = true;
+                state.error = false; // Set error to false when loading
+            })
+            .addCase(fetchStocks.fulfilled, (state, action) => {
+                state.loading = false;
+                state.stocks = action.payload;
+                state.error = false; // Set error to false when successful
+            })
+            .addCase(fetchStocks.rejected, (state) => {
+                state.loading = false;
+                state.error = true; // Set error to true when failed
+            });
     },
 });
 
