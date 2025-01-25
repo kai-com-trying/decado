@@ -116,6 +116,77 @@ export const frameworks = [
             dividendGrowth: "Positive growth over the past 5 years",
             earningsStability: "No earnings decline in past 5 years"
         }
-    }
+    },
     
+    {
+        id: 11,
+        name: 'Special Situation Stocks',
+        description: 'Stocks with unique catalysts or events that could unlock value',
+        criteria: {
+            eventDriven: "Mergers, acquisitions, spin-offs, or other special events",
+            undervaluation: "Market price does not reflect true value",
+            catalyst: "Clear path to value realization within a specific timeframe",
+            risk: "Understand the risks and potential outcomes"
+        }
+    },
+    
+    {
+        id: 12,
+        name: 'Contrarian Stocks',
+        description: 'Stocks that are out of favor with the market but have long-term potential',
+        criteria: {
+            negativeSentiment: "Market pessimism or negative news",
+            valuation: "Trading below intrinsic value or historical averages",
+            contrarianInvesting: "Buy when others are fearful",
+            longTermView: "Focus on long-term value creation"
+        }
+    },
+    
+    {
+        id: 13,
+        name: 'Quality Growth Stocks',
+        description: 'Companies with strong growth potential and solid fundamentals',
+        criteria: {
+            revenueGrowth: "Consistent revenue growth over the past 5 years",
+            earningsGrowth: "Positive earnings growth over the past 5 years",
+            returnOnEquity: "ROE > 15%",
+            competitiveAdvantage: "Sustainable competitive advantage"
+        }
+    },
+    
+    {
+        id: 14,
+        name: 'Blue Chip Stocks',
+        description: 'Stocks of well-established, financially stable companies',
+        criteria: {
+            marketCapitalization: "Large-cap companies with market cap > $10B",
+            dividendPayments: "Consistent dividend payments over time",
+            earningsStability: "Stable earnings growth and financial health",
+            industryLeaders: "Leading companies in their respective industries"
+        }
+    },
+    
+    {
+        id: 15,
+        name: 'Value Stocks',
+        description: 'Stocks trading below their intrinsic value with solid fundamentals',
+        criteria: {
+            priceToEarnings: "P/E ratio < 15",
+            priceToBook: "P/B ratio < 1.5",
+            dividendYield: "Dividend yield > 3%",
+            financialHealth: "Strong balance sheet and low debt levels"
+        }
+    },
+    
+    {
+        id: 16,
+        name: 'GARP Stocks',
+        description: 'Growth at a reasonable price - stocks with growth potential at a fair price',
+        criteria: {
+            earningsGrowth: "Positive earnings growth over the past 5 years",
+            priceToEarnings: "P/E ratio < 20",
+            priceToEarningsGrowth: "PEG ratio < 1",
+            undervalued: "Trading below intrinsic value"
+        }
+    },
 ];
