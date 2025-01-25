@@ -1,0 +1,39 @@
+.navbar {
+    position: fixed;
+    top: 0; 
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #092635;
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+.navItem {
+  color: #c5c5c5;
+  font-size: 24px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.navItem:hover {
+  color: #fff;
+}
+
+.navItem span {
+  margin-left: 10px;
+}
+
+.active {
+  font-weight: 800; /* Style for the active link */
+  color: #fff;
+  border-bottom: 2px solid #fff; /* Add a border to indicate active state */
+}
+
+.active:hover {
+  color: #fff;
+}

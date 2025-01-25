@@ -1,11 +1,16 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import NavBar from './layout/NavBar/NavBar';
+import styles from './Root.module.css';
+
 
 const Root = () => {
   return (
     <div>
-      <p>test</p>
-      <Outlet />
+      <NavBar />
+      <div className={styles.content}>
+        <Outlet />
+      </div>
     </div>
   );
 };

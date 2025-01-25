@@ -41,12 +41,18 @@ const searchSlice = createSlice({
         state.searchResults = action.payload;
         state.error = false;
       })
-      .addCase(fetchSearchResults.rejected, (state) => {
+      .addCase(fetchSearchResults.rejected, (state, action) => {
         state.loading = false;
-        state.error = true;
+        state.error = action.payload;
       });
   },
 });
 
 export const { setSearchQuery } = searchSlice.actions;
+
+export const searchStocks = (query) => (dispatch) => {
+  dispatch(setSearchQuery(query));
+  dispatch(fetchSearchResults(query));
+};
+
 export default searchSlice.reducer;
