@@ -23,9 +23,9 @@ const StocksList = () => {
     }   
 
     return (
-        <div>
+        <div className={styles.stocksList}>
             {stocks.map((stock) => (
-                <StocksTile key={stock.ticker} stock={stock} />
+                <StocksTile key={stock.symbol} stock={stock} />
             ))}
         </div>
     )
