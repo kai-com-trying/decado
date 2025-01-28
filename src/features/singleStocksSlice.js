@@ -14,9 +14,14 @@ export const fetchStocks = createAsyncThunk(
     async (symbol, { rejectWithValue }) => {
         try {
             const response = await axios.get(`https://api.polygon.io/v2/aggs/ticker/${symbol}/prev?apiKey=${apiKey}`);
+            if (!response.data) {
+                throw new Error("No data received");
+              }
+              
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data);
+            console.error("Error fetching stocks:", error.response?.data || error.message);
+            return rejectWithValue(error.response?.data || { error: "Unknown error occurred" });
         }
     }
 );
