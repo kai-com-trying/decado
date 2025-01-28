@@ -5,8 +5,21 @@ import { FaSistrix } from 'react-icons/fa'
 const SearchStocksBar = () => {
   return (
     <div className={styles.searchArea}>
-      <input type="text" placeholder="Search for stocks..." className={styles.searchBar} />
-      <FaSistrix className={styles.searchIcon} />
+      <form 
+        className={styles.searchForm}>
+        <input 
+          type="text" 
+          placeholder="Search for stocks..." 
+          className={styles.searchBar} 
+        />
+        <button 
+          type="submit" 
+          className={styles.searchButton}
+        >
+          <FaSistrix className={styles.searchIcon} />
+        </button>
+        
+      </form>
     </div>
   )
 }
