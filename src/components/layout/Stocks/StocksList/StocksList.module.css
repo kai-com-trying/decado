@@ -1,3 +1,11 @@
 .stocksList{
     margin: 60px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+.tiles{
+    flex: 1 1 calc(50% - 10px);
 }

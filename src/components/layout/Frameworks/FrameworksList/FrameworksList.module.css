@@ -9,7 +9,7 @@
     margin: 0 auto;
 }
 
-.frameworksList::after {
+/* .frameworksList::after {
     content: "";
     flex: auto;
-}
+} */

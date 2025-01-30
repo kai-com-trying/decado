@@ -1,4 +1,6 @@
-import React from 'react'
+import React from 'react';
+import { fetchStocks } from '../../features/singleStocksSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const StocksPage = () => {
   return (
