@@ -35,13 +35,13 @@
 
 .name{
     font-size: 1rem;
-    display: -webkit-box; 
-    -webkit-line-clamp: 1;  /* Limits text to 1 line */
+    /* display: -webkit-box; 
+    -webkit-line-clamp: 1;  
     -webkit-box-orient: vertical; 
     overflow: hidden; 
     text-overflow: ellipsis;
-    max-width: 80%; /* Adjust width based on layout */
-    word-wrap: break-word; /* Ensures long words break */
+    max-width: 80%; 
+    word-wrap: break-word;  */
 }
 
 .size{

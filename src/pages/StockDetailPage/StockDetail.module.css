@@ -1,0 +1,131 @@
+.header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+    background-color: aliceblue;
+    height: 200px;
+}
+
+.PE{
+    font-size: 32px;
+}
+
+.quantitative{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.content{
+    background-color: aliceblue;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 30px;
+}
+
+.profitabilityContent{
+    width: 400px;
+}
+
+.profitabilityContent .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.criteria {
+    display: flex;
+    flex-direction: column;
+}
+
+.subtext {
+    font-size: 12px;
+    color: gray;
+}
+
+.figure {
+    text-align: right;
+}
+
+.earningsStability{
+    width: 760px;
+}
+
+.earningsStabilityContent {
+    display: flex;
+    justify-content: space-between;
+    gap: 60px;
+}
+
+.leftContent {
+    /* flex: 1; */
+}
+
+.rightContent {
+    /* flex: 1; */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2f2f2;
+}
+
+.rightContent{
+    width: 300px;
+    text-align: right;
+}
+
+.rightContent .row {
+    margin-bottom: 20px;
+}
+
+.growthAndPe{
+    width: 560px;
+}
+
+.peHeader{
+    margin-bottom: 20px;
+}
+
+.growthAndPe h3{
+    margin-bottom: 0px;
+}
+
+.growthAndPeContent .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.financialPositionContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.financialPositionContent .left,
+.financialPositionContent .right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+}
+
+.financialPositionContent .center {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+}
