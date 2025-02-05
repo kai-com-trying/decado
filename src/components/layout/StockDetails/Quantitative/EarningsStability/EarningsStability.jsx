@@ -1,8 +1,9 @@
 import React from 'react';
-import styles from '../../../../../pages/StockDetailPage/StockDetail.module.css';
+import mainStyles from '../../../../../pages/StockDetailPage/StockDetail.module.css';
+import styles from './EarningsStability.module.css';
 
 const EarningsStability = () => (
-  <div className={`${styles.earningsStability} ${styles.content}`}>
+  <div className={`${styles.earningsStability} ${mainStyles.content}`}>
     <h3>Earnings Stability</h3>
     <div className={styles.earningsStabilityContent}>
       <div className={styles.leftContent}>

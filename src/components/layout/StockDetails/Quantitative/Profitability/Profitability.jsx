@@ -1,8 +1,9 @@
 import React from 'react';
-import styles from '../../../../../pages/StockDetailPage/StockDetail.module.css';
+import mainStyles from '../../../../../pages/StockDetailPage/StockDetail.module.css';
+import styles from './Profitability.module.css';
 
 const Profitability = () => (
-  <div className={`${styles.profitability} ${styles.content}`}>
+  <div className={`${styles.profitability} ${mainStyles.content}`}>
     <h3>Profitability (per share)</h3>
     <div className={styles.profitabilityContent}>
       <div className={styles.row}>

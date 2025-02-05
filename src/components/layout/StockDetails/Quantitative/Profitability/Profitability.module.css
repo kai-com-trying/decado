@@ -1,0 +1,23 @@
+.profitabilityContent{
+    width: 400px;
+}
+
+.profitabilityContent .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.criteria {
+    display: flex;
+    flex-direction: column;
+}
+
+.subtext {
+    font-size: 12px;
+    color: gray;
+}
+
+.figure {
+    text-align: right;
+}

@@ -1,5 +1,6 @@
 import React from 'react';
-import styles from '../../../../pages/StockDetailPage/StockDetail.module.css';
+import mainStyles from '../../../../pages/StockDetailPage/StockDetail.module.css';
+import styles from './StockHeader.module.css';
 
 const StockHeader = () => (
   <div className={styles.header}>

@@ -1,8 +1,9 @@
 import React from 'react';
-import styles from '../../../../../pages/StockDetailPage/StockDetail.module.css';
+import mainStyles from '../../../../../pages/StockDetailPage/StockDetail.module.css';
+import styles from './GrowthAndPe.module.css';
 
 const GrowthAndPe = () => (
-  <div className={`${styles.growthAndPe} ${styles.content}`}>
+  <div className={`${styles.growthAndPe} ${mainStyles.content}`}>
     <div className={styles.peHeader}>
         <h3>Growth and P/E</h3>
         <span className={styles.subtext}>P/E: price for $1 earnings</span>

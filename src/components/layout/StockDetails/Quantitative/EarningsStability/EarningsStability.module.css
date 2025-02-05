@@ -1,0 +1,41 @@
+.earningsStability{
+    width: 760px;
+}
+
+.earningsStabilityContent {
+    display: flex;
+    justify-content: space-between;
+    gap: 60px;
+}
+
+.leftContent {
+    /* flex: 1; */
+}
+
+.rightContent {
+    /* flex: 1; */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2f2f2;
+}
+
+.rightContent{
+    width: 300px;
+    text-align: right;
+}
+
+.rightContent .row {
+    margin-bottom: 20px;
+}

@@ -1,0 +1,17 @@
+.growthAndPe{
+    width: 560px;
+}
+
+.peHeader{
+    margin-bottom: 20px;
+}
+
+.growthAndPe h3{
+    margin-bottom: 0px;
+}
+
+.growthAndPeContent .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
