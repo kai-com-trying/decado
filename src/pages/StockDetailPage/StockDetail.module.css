@@ -1,9 +1,16 @@
 .quantitative{
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 50px;
+    width: 50vw;
+    margin: 0 auto;
+    padding: 50px;
+}
+
+.quantitative > * {
+    width: 100%; /* Ensures all children take full width */
 }
 
 .content{
@@ -11,6 +18,10 @@
     padding: 20px;
     margin: 10px;
     border-radius: 30px;
+    min-width: 800px;
+    max-width: 00px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 

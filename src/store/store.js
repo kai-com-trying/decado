@@ -5,10 +5,12 @@ import allStocksReducer from '../features/allStocksSlice';
 import stockSOCFReducer from '../features/stockSOCFSlice';
 import stockSOPLReducer from '../features/stockSOPLSlice';
 import stockSOFPReducer from '../features/stockSOFPSlice';
+import stockPriceReducer from '../features/stockPriceSlice';
 
 export const store = configureStore({
   reducer: {
     stockDetail: singleStocksReducer,
+    stockPrice: stockPriceReducer,
     search: searchReducer,
     allStocks: allStocksReducer,
     socf: stockSOCFReducer,

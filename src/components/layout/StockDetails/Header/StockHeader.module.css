@@ -1,12 +1,19 @@
 .header {
     display: flex;
     justify-content: space-around;
-    align-items: center;
-    margin-top: 20px;
+    align-items: end;
+    padding: 50px;
     background-color: aliceblue;
     height: 200px;
 }
 
+.details{
+    display: flex;
+    height: 100%;
+    align-items: end;
+}
+
 .PE{
     font-size: 32px;
+    margin: 0;
 }
