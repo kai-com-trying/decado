@@ -12,7 +12,7 @@ import EarningsStability from '../../components/layout/StockDetails/Quantitative
 import GrowthAndPe from '../../components/layout/StockDetails/Quantitative/GrowthAndPe/GrowthAndPe';
 import FinancialPosition from '../../components/layout/StockDetails/Quantitative/FinancialPosition/FinancialPosition';
 import styles from './StockDetail.module.css';
-import { calculateEPS, calculateBVPS, calculateROE, calculateROIC, calculate5YearAverage, calculate3YearAverage } from '../../utils/calculations';
+import { calculateEPS, calculateBVPS, calculateROE, calculateROIC, calculateNYearAverage, formatLargeNumber } from '../../utils/calculations';
 
 const StockDetail = () => {
   const { ticker } = useParams()
@@ -34,8 +34,7 @@ const StockDetail = () => {
       const storedSOFP = localStorage.getItem(`${ticker}-SOFP`);
       const storedStockDetails = localStorage.getItem(`${ticker}-StockDetails`);
       const storedStockPrice = localStorage.getItem(`${ticker}-StockPrice`);
-
-      // If data is available in localStorage, set it in the store without calling the API
+  
       if (storedSOCF && storedSOPL && storedSOFP && storedStockDetails && storedStockPrice) {
         dispatch({ type: 'stockSOCF/setData', payload: JSON.parse(storedSOCF) });
         dispatch({ type: 'stockSOPL/setData', payload: JSON.parse(storedSOPL) });
@@ -43,23 +42,57 @@ const StockDetail = () => {
         dispatch({ type: 'stockDetail/setData', payload: JSON.parse(storedStockDetails) });
         dispatch({ type: 'stockPrice/setData', payload: JSON.parse(storedStockPrice) });
       } else {
-        // Dispatch API calls to fetch data and save them to localStorage
-        dispatch(fetchSOCF(ticker));
-        dispatch(fetchSOPL(ticker));
-        dispatch(fetchSOFP(ticker));
-        dispatch(fetchStockDetails(ticker));
-        dispatch(fetchStockPrice(ticker));
+        // Fetch from API and store results in localStorage
+        dispatch(fetchSOCF(ticker)).then((response) => {
+          if (response.payload) localStorage.setItem(`${ticker}-SOCF`, JSON.stringify(response.payload));
+        });
+  
+        dispatch(fetchSOPL(ticker)).then((response) => {
+          if (response.payload) localStorage.setItem(`${ticker}-SOPL`, JSON.stringify(response.payload));
+        });
+  
+        dispatch(fetchSOFP(ticker)).then((response) => {
+          if (response.payload) localStorage.setItem(`${ticker}-SOFP`, JSON.stringify(response.payload));
+        });
+  
+        dispatch(fetchStockDetails(ticker)).then((response) => {
+          if (response.payload) localStorage.setItem(`${ticker}-StockDetails`, JSON.stringify(response.payload));
+        });
+  
+        dispatch(fetchStockPrice(ticker)).then((response) => {
+          if (response.payload) localStorage.setItem(`${ticker}-StockPrice`, JSON.stringify(response.payload));
+        });
       }
     }
   }, [dispatch, ticker]);
 
+  const allYears = [
+    ...new Set([
+      ...socf.map(item => item.fiscalDateEnding),
+      ...sofp.map(item => item.fiscalDateEnding),
+      ...sopl.map(item => item.fiscalDateEnding)
+    ])
+  ];
+
+  const mergedData = allYears.map(year => {
+    const socfReport = socf.find(report => report.fiscalDateEnding === year) || {};
+    const soplReport = sopl.find(report => report.fiscalDateEnding === year) || {};
+    const sofpReport = sofp.find(report => report.fiscalDateEnding === year) || {};
+    return { 
+      year, 
+      ...socfReport, 
+      ...soplReport, 
+      ...sofpReport };
+  })
+
   
 
   //5 Year Calculations:
-  const fiveYearNetIncome = calculate5YearAverage(sopl, 'netIncome');
-  const fiveYearSharesOutstanding = calculate5YearAverage(sofp, 'commonStockSharesOutstanding');
-  const fiveYearEquity = calculate5YearAverage(sofp, 'totalShareholderEquity');
-  const fiveYearLiabilities = calculate5YearAverage(sofp, 'totalLiabilities');
+
+  const fiveYearNetIncome = calculateNYearAverage(mergedData, 'netIncome', 5);
+  const fiveYearSharesOutstanding = calculateNYearAverage(mergedData, 'commonStockSharesOutstanding', 5);
+  const fiveYearEquity = calculateNYearAverage(mergedData, 'totalShareholderEquity', 5);
+  const fiveYearLiabilities = calculateNYearAverage(mergedData, 'totalLiabilities', 5);
 
   const fiveYearEPS = calculateEPS(fiveYearNetIncome, fiveYearSharesOutstanding);
   const fiveYearBVPS = calculateBVPS(fiveYearEquity, fiveYearSharesOutstanding);
@@ -67,11 +100,21 @@ const StockDetail = () => {
   const fiveYearROIC = calculateROIC(fiveYearNetIncome, fiveYearLiabilities, fiveYearEquity);
   
   //3 Year Calculations:
-  const threeYearNetIncome = calculate3YearAverage(sopl, 'netIncome');
-  const threeYearSharesOutstanding = calculate3YearAverage(sofp, 'commonStockSharesOutstanding');
+  const threeYearNetIncome = calculateNYearAverage(mergedData, 'netIncome', 3);
+  const threeYearSharesOutstanding = calculateNYearAverage(mergedData, 'commonStockSharesOutstanding', 3);
   
   const threeYearEPS = calculateEPS(threeYearNetIncome, threeYearSharesOutstanding);
   
+  //Arrays:
+  const earningsHistory = mergedData.map(report => {
+    const netIncome = parseFloat(report.netIncome);
+    const sharesOutstanding = report.commonStockSharesOutstanding;
+    const year = report.fiscalDateEnding;
+    const eps = calculateEPS(netIncome, sharesOutstanding).toFixed(2);
+    return { year, netIncome, eps };
+  }); 
+
+
 
   if(isLoading) {
       return <p>Loading...</p>
@@ -80,6 +123,7 @@ const StockDetail = () => {
   if(hasError) {
       return <p>Error: {error.message || error}</p>
   }
+
 
   return (
     <div>
@@ -95,7 +139,9 @@ const StockDetail = () => {
           fiveYearROE={fiveYearROE}
           fiveYearROIC={fiveYearROIC}
         />
-        <EarningsStability />
+        <EarningsStability
+          earningsHistory={earningsHistory}
+        />
         <GrowthAndPe />
         <FinancialPosition />
       </div>

@@ -5,7 +5,7 @@ import styles from './StockHeader.module.css';
 const StockHeader = ({ stockDetail, price, threeYearEPS }) => {
 
   
-
+  const marketCap = stockDetail.MarketCapitalization
   const formattedIndustry = stockDetail.Industry ? stockDetail.Industry.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) : "N/A";
   const conditionalSite = stockDetail.OfficialSite ? stockDetail.OfficialSite : "N/A";
 
@@ -16,7 +16,7 @@ const StockHeader = ({ stockDetail, price, threeYearEPS }) => {
       <div className={styles.title}>
         <h1>{stockDetail.Name} ({stockDetail.Symbol})</h1>
         <p>Industry: {formattedIndustry}</p>
-        <p>Size: ${stockDetail.MarketCapitalization}</p>
+        <p>Market Cap: ${marketCap}</p>
         <p>Website: <a href={conditionalSite} target='_blank' rel="noopener noreferrer">{conditionalSite}</a></p>
       </div>
       <div className={styles.details}>

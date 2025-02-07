@@ -16,14 +16,27 @@ export const fetchStockDetails = createAsyncThunk(
             const response = await axios.get('https://www.alphavantage.co/query', {
                 params: {
                     function: 'OVERVIEW',
-                    symbol: symbol,
-                    apikey: AVApiKey,
+                    symbol: 'IBM',
+                    apikey: 'demo',
                 },
             });
             if (!response.data) {
                 throw new Error("No data received");
             }
-            return response.data;
+            const formattedData = Object.keys(response.data).reduce((acc, key) => {
+                const value = response.data[key];
+
+                // Check if the value is a string that represents a number
+                if (!isNaN(value) && value.trim() !== "") {
+                    acc[key] = parseFloat(value); // Convert to a number
+                } else {
+                    acc[key] = value; // Keep non-numeric values as they are
+                }
+                
+                return acc;
+            }, {});
+
+            return formattedData;
         } catch (error) {
             console.error("Error fetching stock details:", error.response?.data || error.message);
             return rejectWithValue(error.response?.data || { error: "Unknown error occurred" });

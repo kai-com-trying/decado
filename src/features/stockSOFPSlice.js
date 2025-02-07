@@ -18,14 +18,30 @@ export const fetchSOFP = createAsyncThunk(
             const response = await axios.get('https://www.alphavantage.co/query', {
                 params: {
                     function: 'BALANCE_SHEET',
-                    symbol: symbol,
-                    apikey: AVApiKey,
+                    symbol: 'IBM',
+                    apikey: 'demo',
                 },
             });
             if (!response.data) {
                 throw new Error("No data received");
             }
-            return response.data.annualReports;
+            
+            const formattedData = response.data.annualReports.map(report => {
+                return Object.keys(report).reduce((acc, key) => {
+                    const value = report[key];
+
+                    // Convert to number if it's a numeric string
+                    if (!isNaN(value) && value.trim() !== "" && value !== "None") {
+                        acc[key] = parseFloat(value);
+                    } else {
+                        acc[key] = value; // Keep non-numeric values as is
+                    }
+                    
+                    return acc;
+                }, {});
+            });
+
+            return formattedData;
         } catch (error) {
             console.error("Error fetching SOFP data:", error.response?.data || error.message);
             return rejectWithValue(error.response?.data || { error: "Unknown error occurred" });
