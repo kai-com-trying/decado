@@ -18,8 +18,8 @@ export const fetchSOFP = createAsyncThunk(
             const response = await axios.get('https://www.alphavantage.co/query', {
                 params: {
                     function: 'BALANCE_SHEET',
-                    symbol: 'IBM',
-                    apikey: 'demo',
+                    symbol: symbol,
+                    apikey: AVApiKey,
                 },
             });
             if (!response.data) {
@@ -31,8 +31,8 @@ export const fetchSOFP = createAsyncThunk(
                     const value = report[key];
 
                     // Convert to number if it's a numeric string
-                    if (!isNaN(value) && value.trim() !== "" && value !== "None") {
-                        acc[key] = parseFloat(value);
+                    if (typeof value === 'string' && !Number.isNaN(Number(value)) && value.trim() !== "" && value !== "None") {
+                        acc[key] = Number(value);
                     } else {
                         acc[key] = value; // Keep non-numeric values as is
                     }
@@ -40,7 +40,7 @@ export const fetchSOFP = createAsyncThunk(
                     return acc;
                 }, {});
             });
-
+            console.log(formattedData)
             return formattedData;
         } catch (error) {
             console.error("Error fetching SOFP data:", error.response?.data || error.message);

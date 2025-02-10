@@ -18,8 +18,8 @@ export const fetchSOPL = createAsyncThunk(
             const response = await axios.get('https://www.alphavantage.co/query', {
                 params: {
                     function: 'INCOME_STATEMENT',
-                    symbol: 'IBM',
-                    apikey: 'demo',
+                    symbol: symbol,
+                    apikey: AVApiKey,
                 },
             });
 

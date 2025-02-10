@@ -39,3 +39,11 @@
 .rightContent .row {
     margin-bottom: 20px;
 }
+
+.rightContent h4 {
+    margin-top: 0px;
+}
+
+.number{
+    text-align: right !important;
+}

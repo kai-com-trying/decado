@@ -85,7 +85,7 @@ const StockDetail = () => {
       ...sofpReport };
   })
 
-  
+  console.log(mergedData);
 
   //5 Year Calculations:
 
@@ -105,15 +105,86 @@ const StockDetail = () => {
   
   const threeYearEPS = calculateEPS(threeYearNetIncome, threeYearSharesOutstanding);
   
-  //Arrays:
-  const earningsHistory = mergedData.map(report => {
-    const netIncome = parseFloat(report.netIncome);
+  //Earnings Stability:
+  const earningsHistory = mergedData.slice(0, 10).map((report, index) => {
+    const netIncome = report.netIncome;
     const sharesOutstanding = report.commonStockSharesOutstanding;
     const year = report.fiscalDateEnding;
-    const eps = calculateEPS(netIncome, sharesOutstanding).toFixed(2);
-    return { year, netIncome, eps };
+    const eps = parseFloat(calculateEPS(netIncome, sharesOutstanding).toFixed(2));
+    let growthNumber;
+    let growth = "-";
+    // Calculate Growth Rate
+    if (index < 9) {  // Since we're slicing to 10 items, this ensures we're within range
+      const prevYearNetIncome = parseFloat(mergedData[index + 1]?.netIncome) || 0;
+      
+      if (prevYearNetIncome !== 0) {  // Avoid division by zero but allow negative values
+          growthNumber = (((netIncome - prevYearNetIncome) / prevYearNetIncome) * 100);
+          growth = growthNumber >= 0 ? `+${growthNumber.toFixed(2)}%` : `${growthNumber.toFixed(2)}%`;
+      } else {
+          growth = "N/A";
+      }
+    }
+
+    let prev3yEpsAvg;
+
+    // Calculate 3-Year Average EPS
+    if (index < 7) {  // Ensure at least 3 years exist ahead
+        const prev3YearsEPS = mergedData
+            .slice(index + 1, index + 4)
+            .map(r => parseFloat(calculateEPS(r.netIncome, r.commonStockSharesOutstanding)) || 0);
+
+        if (prev3YearsEPS.length === 3) {
+            prev3yEpsAvg = prev3YearsEPS.reduce((acc, val) => acc + val, 0) / 3;
+            // prev3yEpsAvg = prev3YearEPSAvg;
+        }
+    }
+    
+    const roundedPrev3yEpsAvg = prev3yEpsAvg ? prev3yEpsAvg.toFixed(2) : "-";
+
+    return { year, netIncome, eps, growth, prev3yEpsAvg, growthNumber, roundedPrev3yEpsAvg };
   }); 
 
+  const growthLength = earningsHistory.filter(item => typeof(item.growthNumber) === "number").length;
+  const negativeGrowth = earningsHistory.filter(item => typeof(item.growthNumber) === "number" && item.growthNumber < 0).length;
+  const declineGrowthPercentage = (((negativeGrowth / growthLength) * 100).toFixed(2)) + "%" ;
+
+  const epsComparisonLength = earningsHistory.filter(item => typeof(item.prev3yEpsAvg) === "number").length;
+  const epsDeclined = earningsHistory.filter(item => typeof(item.prev3yEpsAvg) === "number" && item.eps < item.prev3yEpsAvg).length;
+  const declineEPSPercentage = (((epsDeclined / epsComparisonLength) * 100).toFixed(2)) + "%" ;
+
+  const negativeNetIncome = earningsHistory.filter(item => item.netIncome < 0).length;
+  const negativeNetIncomePercentage = ((negativeNetIncome / earningsHistory.length) * 100).toFixed(2) + "%";
+
+  //Growth of Company:
+  const lastThreeYearNetIncome = calculateNYearAverage(mergedData, 'netIncome', 3);
+  const lastThreeYearSharesOutstanding = calculateNYearAverage(mergedData, 'commonStockSharesOutstanding', 3);
+  const lastThreeYearEPS = calculateEPS(lastThreeYearNetIncome, lastThreeYearSharesOutstanding);
+
+  const lastDecadeThreeYearNetIncome = calculateNYearAverage(mergedData.slice(10, 13), 'netIncome', 3);
+  const lastDecadeThreeYearSharesOutstanding = calculateNYearAverage(mergedData.slice(10, 13), 'commonStockSharesOutstanding', 3);
+  // const lastThreeYears = `${(new Date(mergedData[2].year)).getFullYear()}-${(new Date(mergedData[0].year)).getFullYear()}`
+  // const lastDecadeThreeYears = `${(new Date(mergedData[12].year)).getFullYear()}-${(new Date(mergedData[10].year)).getFullYear()}`
+  const lastDecadeThreeYearEPS = calculateEPS(lastDecadeThreeYearNetIncome, lastDecadeThreeYearSharesOutstanding);
+
+  const growthOfCompany = (((lastThreeYearEPS - lastDecadeThreeYearEPS) / lastDecadeThreeYearEPS) * 100).toFixed(2) + "%";
+
+  //Financial Position:
+  const fiveYearFinancialCondition = mergedData.slice(0,5).map((report) => {
+    const ca = report.totalCurrentAssets;
+    const cl = report.totalCurrentLiabilities;
+    const totalDebt = report.totalLiabilities;
+    const totalShareholderEquity = report.totalShareholderEquity;
+
+    const cacl = ca / cl;
+    const debtToEquity = totalDebt / totalShareholderEquity;
+    
+    return {cacl, debtToEquity}
+  })
+  // Calculate averages
+  const total = fiveYearFinancialCondition.length;
+
+  const avgCACL = fiveYearFinancialCondition.reduce((sum, item) => sum + item.cacl, 0) / total;
+  const avgDebtToEquity = fiveYearFinancialCondition.reduce((sum, item) => sum + item.debtToEquity, 0) / total;
 
 
   if(isLoading) {
@@ -141,9 +212,21 @@ const StockDetail = () => {
         />
         <EarningsStability
           earningsHistory={earningsHistory}
+          declineGrowthPercentage={declineGrowthPercentage}
+          declineEPSPercentage={declineEPSPercentage}
+          negativeNetIncomePercentage={negativeNetIncomePercentage}
         />
-        <GrowthAndPe />
-        <FinancialPosition />
+        <GrowthAndPe 
+          growthOfCompany={growthOfCompany}
+          threeYearEPS={threeYearEPS}
+          price={price.price}
+          // lastThreeYears={lastThreeYears}
+          // lastDecadeThreeYears={lastDecadeThreeYears}
+        />
+        <FinancialPosition
+          avgCACL={avgCACL}
+          avgDebtToEquity={avgDebtToEquity}
+        />
       </div>
     </div>
   );
