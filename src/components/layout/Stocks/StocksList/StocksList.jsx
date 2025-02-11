@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { fetchStocks } from '../../../../features/allStocksSlice'
 import StocksTile from '../StocksTile/StocksTile'
 import styles from './StocksList.module.css'
+import { fetchSearchResults } from '../../../../features/searchSlice'
+import { Link } from 'react-router-dom'
 
 const StocksList = () => {
 
@@ -12,6 +14,11 @@ const StocksList = () => {
         dispatch(fetchStocks())
     }, [dispatch])
 
+    const searchResult = useSelector((state) => state.search.searchResults)
+    useEffect(() => {
+        console.log(searchResult)
+    }, [searchResult])
+
     const { stocks, loading, error } = useSelector((state) => state.allStocks)
     
     if(loading) {
@@ -19,13 +26,20 @@ const StocksList = () => {
     } 
 
     if(error) {
-        return <p>Error: {error.message || error}</p>
+        return (
+            <div className={styles.error}>
+                <p>Error: {error.message || error}</p>
+                <p>Return <Link to="/">Home</Link></p>
+            </div>
+        )
     }   
+
+    const displayStock = searchResult.length > 0 ? searchResult : stocks;
 
     return (
         <div className={styles.stocksList}>
-            {stocks.map((stock) => (
-                <div key={stock.ticker} className={styles.tiles} >
+            {displayStock.map((stock) => (
+                <div key={stock.ticker || stock["1. symbol"]} className={styles.tiles} >
                     <StocksTile stock={stock} />
                 </div>
             ))}

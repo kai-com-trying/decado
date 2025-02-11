@@ -18,7 +18,7 @@ export const fetchStocks = createAsyncThunk(
         type: 'CS',
         market: 'stocks',
         active: 'true',
-        limit: 30, // Fetch only 30 stocks
+        limit: 100, // Fetch only 100 stocks
       };
 
       const response = await axios.get('https://api.polygon.io/v3/reference/tickers', { params: parameter });
@@ -27,11 +27,11 @@ export const fetchStocks = createAsyncThunk(
         throw new Error("No data received");
       }
 
-      console.log(`Fetched ${response.data.results.length} stocks`);
+      console.log(response.data.results);
       return response.data.results; // Return the results
     } catch (error) {
-      console.error("Error fetching stocks:", error.response?.data || error.message);
-      return rejectWithValue(error.response?.data || { error: "Unknown error occurred" });
+      console.error("Error fetching stocks:",  error.response?.data?.error || error.response?.data);
+      return rejectWithValue(error.response?.data?.error || { error: "Unknown error occurred" });
     }
   }
 );

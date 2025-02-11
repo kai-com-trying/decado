@@ -19,6 +19,20 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+a {
+  color: inherit;  /* Uses the same color as the default text (#1a1a1a) */
+  text-decoration: none; /* Remove underline */
+}
+
+/* Ensure visited links do not change color */
+a:visited {
+  color: inherit; 
+}
+
+/* Change color when hovering */
+a:hover {
+  color: #092635; /* Change to your preferred hover color */
+}
 
 
 /*a {

@@ -12,7 +12,7 @@
 }
 
 .navItem {
-  color: #c5c5c5;
+  color: #c5c5c5 !important;
   font-size: 24px;
   text-decoration: none;
   display: flex;
@@ -21,7 +21,7 @@
 }
 
 .navItem:hover {
-  color: #fff;
+  color: #fff !important;
 }
 
 .navItem span {
@@ -30,7 +30,7 @@
 
 .active {
   font-weight: 800; /* Style for the active link */
-  color: #fff;
+  color: #fff !important;
   border-bottom: 2px solid #fff; /* Add a border to indicate active state */
 }
 

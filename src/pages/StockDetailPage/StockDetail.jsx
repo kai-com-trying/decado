@@ -36,10 +36,6 @@ const StockDetail = () => {
       dispatch(fetchStockPrice(ticker));
     }
   }, [dispatch, ticker, socf, sofp, sopl]);
-
-
-  
-
   
 
   const mergedData = useMemo(() => {

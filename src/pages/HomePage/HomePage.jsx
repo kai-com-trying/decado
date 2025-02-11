@@ -10,7 +10,6 @@ const HomePage = () => {
         <h1>Analyse companies worth  <br></br> investing for a decade or more.</h1>
       </header>
       <SearchStocksBar />
-      <StocksList />
     </>
   );
 };

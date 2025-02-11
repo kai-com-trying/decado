@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const apiKey = import.meta.env.VITE_POLYGON_API_KEY;
+const apiKey = import.meta.env.VITE_ALPHAVANTAGE_API_KEY;
 
 const initialState = {
   searchQuery: '',
@@ -14,20 +14,22 @@ export const fetchSearchResults = createAsyncThunk(
   'search/fetchSearchResults',
   async (searchQuery, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`https://www.alphavantage.co/query`, {
-        parameters: {
+      const response = await axios.get('https://www.alphavantage.co/query', {
+        params: {
           function: 'SYMBOL_SEARCH',
-          keywords: 'tesco',
-          apiKey: 'demo'
+          keywords: 'tencent',
+          apikey: 'demo'
         }
       });
 
-      if(!response.length) {
-        return "No matches found"
+      console.log('api: ', response.data)
+
+      if(!response.data.bestMatches || response.data.bestMatches.length === 0) {
+        throw new Error("No matches found");
       }
       return response.data.bestMatches;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data?.error || error.message ||"Unknown API Error");
     }
   }
 );
@@ -39,6 +41,10 @@ const searchSlice = createSlice({
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
     },
+    clearSearchResults: (state) => {
+      state.searchResults = [];
+      state.searchQuery = "";
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -58,11 +64,6 @@ const searchSlice = createSlice({
   },
 });
 
-export const { setSearchQuery } = searchSlice.actions;
-
-export const searchStocks = (query) => (dispatch) => {
-  dispatch(setSearchQuery(query));
-  dispatch(fetchSearchResults(query));
-};
+export const { setSearchQuery, clearSearchResults } = searchSlice.actions;
 
 export default searchSlice.reducer;
