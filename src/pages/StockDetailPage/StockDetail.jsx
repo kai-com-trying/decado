@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useMemo } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSOCF } from '../../features/stockSOCFSlice';
 import { fetchSOFP } from '../../features/stockSOFPSlice';
@@ -28,64 +28,42 @@ const StockDetail = () => {
 
 
   useEffect(() => {
-    if (ticker) {
-      const storedSOCF = localStorage.getItem(`${ticker}-SOCF`);
-      const storedSOPL = localStorage.getItem(`${ticker}-SOPL`);
-      const storedSOFP = localStorage.getItem(`${ticker}-SOFP`);
-      const storedStockDetails = localStorage.getItem(`${ticker}-StockDetails`);
-      const storedStockPrice = localStorage.getItem(`${ticker}-StockPrice`);
-  
-      if (storedSOCF && storedSOPL && storedSOFP && storedStockDetails && storedStockPrice) {
-        dispatch({ type: 'stockSOCF/setData', payload: JSON.parse(storedSOCF) });
-        dispatch({ type: 'stockSOPL/setData', payload: JSON.parse(storedSOPL) });
-        dispatch({ type: 'stockSOFP/setData', payload: JSON.parse(storedSOFP) });
-        dispatch({ type: 'stockDetail/setData', payload: JSON.parse(storedStockDetails) });
-        dispatch({ type: 'stockPrice/setData', payload: JSON.parse(storedStockPrice) });
-      } else {
-        // Fetch from API and store results in localStorage
-        dispatch(fetchSOCF(ticker)).then((response) => {
-          if (response.payload) localStorage.setItem(`${ticker}-SOCF`, JSON.stringify(response.payload));
-        });
-  
-        dispatch(fetchSOPL(ticker)).then((response) => {
-          if (response.payload) localStorage.setItem(`${ticker}-SOPL`, JSON.stringify(response.payload));
-        });
-  
-        dispatch(fetchSOFP(ticker)).then((response) => {
-          if (response.payload) localStorage.setItem(`${ticker}-SOFP`, JSON.stringify(response.payload));
-        });
-  
-        dispatch(fetchStockDetails(ticker)).then((response) => {
-          if (response.payload) localStorage.setItem(`${ticker}-StockDetails`, JSON.stringify(response.payload));
-        });
-  
-        dispatch(fetchStockPrice(ticker)).then((response) => {
-          if (response.payload) localStorage.setItem(`${ticker}-StockPrice`, JSON.stringify(response.payload));
-        });
-      }
+    if (ticker && !socf.length && !sofp.length && !sopl.length) {
+      dispatch(fetchSOCF(ticker));
+      dispatch(fetchSOPL(ticker));
+      dispatch(fetchSOFP(ticker));
+      dispatch(fetchStockDetails(ticker));
+      dispatch(fetchStockPrice(ticker));
     }
-  }, [dispatch, ticker]);
+  }, [dispatch, ticker, socf, sofp, sopl]);
 
-  const allYears = [
-    ...new Set([
-      ...socf.map(item => item.fiscalDateEnding),
-      ...sofp.map(item => item.fiscalDateEnding),
-      ...sopl.map(item => item.fiscalDateEnding)
-    ])
-  ];
 
-  const mergedData = allYears.map(year => {
-    const socfReport = socf.find(report => report.fiscalDateEnding === year) || {};
-    const soplReport = sopl.find(report => report.fiscalDateEnding === year) || {};
-    const sofpReport = sofp.find(report => report.fiscalDateEnding === year) || {};
-    return { 
-      year, 
-      ...socfReport, 
-      ...soplReport, 
-      ...sofpReport };
-  })
+  
 
-  console.log(mergedData);
+  
+
+  const mergedData = useMemo(() => {
+    if(!socf.length || !sofp.length || !sopl.length) return [];
+
+    const allYears = [
+      ...new Set([
+        ...socf.map(item => item.fiscalDateEnding),
+        ...sofp.map(item => item.fiscalDateEnding),
+        ...sopl.map(item => item.fiscalDateEnding)
+      ])
+    ];
+
+    return allYears.map(year => {
+      const socfReport = socf.find(report => report.fiscalDateEnding === year) || {};
+      const soplReport = sopl.find(report => report.fiscalDateEnding === year) || {};
+      const sofpReport = sofp.find(report => report.fiscalDateEnding === year) || {};
+      return { 
+        year, 
+        ...socfReport, 
+        ...soplReport, 
+        ...sofpReport };
+    });
+  }, [socf, sofp, sopl]); 
 
   //5 Year Calculations:
 
@@ -162,8 +140,11 @@ const StockDetail = () => {
 
   const lastDecadeThreeYearNetIncome = calculateNYearAverage(mergedData.slice(10, 13), 'netIncome', 3);
   const lastDecadeThreeYearSharesOutstanding = calculateNYearAverage(mergedData.slice(10, 13), 'commonStockSharesOutstanding', 3);
-  // const lastThreeYears = `${(new Date(mergedData[2].year)).getFullYear()}-${(new Date(mergedData[0].year)).getFullYear()}`
-  // const lastDecadeThreeYears = `${(new Date(mergedData[12].year)).getFullYear()}-${(new Date(mergedData[10].year)).getFullYear()}`
+  const lastYear = mergedData[0]?.fiscalDateEnding ? new Date(mergedData[0].fiscalDateEnding).getFullYear() : "N/A";
+  const threeYearsAgo = mergedData[2]?.fiscalDateEnding ? new Date(mergedData[2].fiscalDateEnding).getFullYear() : "N/A";
+  const decadeAgo = mergedData[10]?.fiscalDateEnding ? new Date(mergedData[10].fiscalDateEnding).getFullYear() : "N/A";
+  const decadeThreeYearsAgo = mergedData[12]?.fiscalDateEnding ? new Date(mergedData[12].fiscalDateEnding).getFullYear() : "N/A";
+  console.log(lastYear, threeYearsAgo, decadeAgo, decadeThreeYearsAgo)
   const lastDecadeThreeYearEPS = calculateEPS(lastDecadeThreeYearNetIncome, lastDecadeThreeYearSharesOutstanding);
 
   const growthOfCompany = (((lastThreeYearEPS - lastDecadeThreeYearEPS) / lastDecadeThreeYearEPS) * 100).toFixed(2) + "%";
@@ -187,13 +168,20 @@ const StockDetail = () => {
   const avgDebtToEquity = fiveYearFinancialCondition.reduce((sum, item) => sum + item.debtToEquity, 0) / total;
 
 
-  if(isLoading) {
-      return <p>Loading...</p>
-  }
-
-  if(hasError) {
-      return <p>Error: {error.message || error}</p>
-  }
+  if(isLoading) return <div className={styles.loading}></div>
+  if(hasError) return (
+    <div className={styles.error}>
+      <p>Error: {hasError}</p>
+      <Link to='/'>
+        <button>Return Home</button>
+      </Link>
+    </div>
+  )
+  if(!mergedData.length) return (
+    <div className={styles.error}>
+      <p>No data available for this stock</p>
+    </div>
+  )
 
 
   return (
@@ -220,8 +208,10 @@ const StockDetail = () => {
           growthOfCompany={growthOfCompany}
           threeYearEPS={threeYearEPS}
           price={price.price}
-          // lastThreeYears={lastThreeYears}
-          // lastDecadeThreeYears={lastDecadeThreeYears}
+          lastYear={lastYear}
+          threeYearsAgo={threeYearsAgo}
+          decadeAgo={decadeAgo}
+          decadeThreeYearsAgo={decadeThreeYearsAgo}
         />
         <FinancialPosition
           avgCACL={avgCACL}

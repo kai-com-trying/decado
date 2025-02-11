@@ -15,7 +15,7 @@ const StocksList = () => {
     const { stocks, loading, error } = useSelector((state) => state.allStocks)
     
     if(loading) {
-        return <p>Loading...</p>
+        return <div className={styles.loading}></div>
     } 
 
     if(error) {

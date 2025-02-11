@@ -7,7 +7,7 @@ const HomePage = () => {
   return (
     <>
       <header className={styles.header}>
-        <h1>Your first step to being an <br></br>intelligent investor starts here.</h1>
+        <h1>Analyse companies worth  <br></br> investing for a decade or more.</h1>
       </header>
       <SearchStocksBar />
       <StocksList />

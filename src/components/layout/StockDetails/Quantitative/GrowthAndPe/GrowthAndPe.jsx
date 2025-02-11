@@ -2,7 +2,7 @@ import React from 'react';
 import mainStyles from '../../../../../pages/StockDetailPage/StockDetail.module.css';
 import styles from './GrowthAndPe.module.css';
 
-const GrowthAndPe = ({growthOfCompany, threeYearEPS, price, lastThreeYears, lastDecadeThreeYears}) => {
+const GrowthAndPe = ({growthOfCompany, threeYearEPS, price, lastThreeYears, lastDecadeThreeYears, lastYear, threeYearsAgo, decadeAgo, decadeThreeYearsAgo}) => {
 
   const pe = (price / threeYearEPS).toFixed(2);
 
@@ -15,14 +15,14 @@ const GrowthAndPe = ({growthOfCompany, threeYearEPS, price, lastThreeYears, last
       <div className={styles.growthAndPeContent}>
         <div className={styles.row}>
           <div className={styles.criteria}>
-            <span>Growth from 20someth EPS to 20sth EPS</span>
+            <span>Growth of EPS from {threeYearsAgo} to {lastYear}</span>
           </div>
           <span className={styles.figure}>{growthOfCompany}</span>
         </div>
         <hr />
         <div className={styles.row}>
           <div className={styles.criteria}>
-            <span>P/E for 20sth earnings</span>
+            <span>P/E for {decadeThreeYearsAgo} to {decadeAgo}</span>
           </div>
           <span className={styles.figure}>${pe}</span>
         </div>

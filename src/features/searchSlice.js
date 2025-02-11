@@ -14,8 +14,18 @@ export const fetchSearchResults = createAsyncThunk(
   'search/fetchSearchResults',
   async (searchQuery, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`https://api.polygon.io/v2/reference/tickers?sort=ticker&perpage=5&page=1&search=${searchQuery}&apiKey=${apiKey}`);
-      return response.data.results;
+      const response = await axios.get(`https://www.alphavantage.co/query`, {
+        parameters: {
+          function: 'SYMBOL_SEARCH',
+          keywords: 'tesco',
+          apiKey: 'demo'
+        }
+      });
+
+      if(!response.length) {
+        return "No matches found"
+      }
+      return response.data.bestMatches;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

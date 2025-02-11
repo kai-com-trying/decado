@@ -16,8 +16,8 @@ export const fetchStockDetails = createAsyncThunk(
             const response = await axios.get('https://www.alphavantage.co/query', {
                 params: {
                     function: 'OVERVIEW',
-                    symbol: symbol,
-                    apikey: AVApiKey,
+                    symbol: 'IBM',
+                    apikey: 'demo',
                 },
             });
             if (!response.data) {
