@@ -35,3 +35,29 @@
     text-decoration: underline;
     color: blue;
 }
+
+.button {
+    display: flex;
+    justify-content: center;
+
+}
+
+.button > button {
+    background-color: #092635;
+    font-size: 18px;
+    color: white;
+    border: transparent;
+    padding: 13px 20px;
+    padding-bottom: 10px;
+    border-radius: 22px;
+    margin: 20px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+}
+
+.button > button:hover {
+    background-color: #092635;
+    cursor: pointer;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.356);
+}

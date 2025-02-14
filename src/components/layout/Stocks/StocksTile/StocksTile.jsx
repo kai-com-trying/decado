@@ -7,7 +7,7 @@ import styles from './StocksTile.module.css'
 const StocksTile = ({ stock }) => {
   return (
     <Link 
-      to={`/stocks/${stock.ticker}`}
+      to={`/stocks/${stock.ticker || stock["1. symbol"]}`}
       className={styles.link}
     >
     <div>
@@ -15,7 +15,7 @@ const StocksTile = ({ stock }) => {
             <div className={styles.left}>
                 <div className={styles.indentifier}>
                     <p className={styles.ticker}>{stock.ticker || stock["1. symbol"]}</p>
-                    <p className={styles.name}>{stock.name || stock["2. name"]}</p>
+                    <p className={styles.name}>{stock.name || stock.title}</p>
                 </div>
             </div>
         </div>

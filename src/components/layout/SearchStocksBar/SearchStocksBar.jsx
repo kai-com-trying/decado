@@ -4,11 +4,13 @@ import { FaSistrix } from 'react-icons/fa'
 import { setSearchQuery, clearSearchResults, fetchSearchResults } from '../../../features/searchSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { RxCross1 } from "react-icons/rx";
+import { useNavigate } from 'react-router-dom'
 
 const SearchStocksBar = () => {
   const dispatch = useDispatch();
   const query = useSelector((state) => state.search.searchQuery);
   const searchResults = useSelector((state) => state.search.searchResults);
+  const navigate = useNavigate();
   const setQuery = (e) => {
     dispatch(setSearchQuery(e.target.value));
     console.log(query);

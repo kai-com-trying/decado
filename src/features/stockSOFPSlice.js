@@ -18,8 +18,8 @@ export const fetchSOFP = createAsyncThunk(
             const response = await axios.get('https://www.alphavantage.co/query', {
                 params: {
                     function: 'BALANCE_SHEET',
-                    symbol: 'IBM',
-                    apikey: 'demo',
+                    symbol: symbol,
+                    apikey: AVApiKey,
                 },
             });
             if (!response.data) {

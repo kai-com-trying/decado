@@ -9,6 +9,7 @@ const NavBar = () => {
       <NavLink
         to="/"
         className={({ isActive }) => (isActive ? `${styles.navItem} ${styles.active}` : styles.navItem)}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       >
         <FaHome />
         <span>Home</span>
@@ -16,6 +17,7 @@ const NavBar = () => {
       <NavLink
         to="/frameworks"
         className={({ isActive }) => (isActive ? `${styles.navItem} ${styles.active}` : styles.navItem)}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       >
         <FaCubes />
         <span>Frameworks</span>
@@ -23,6 +25,7 @@ const NavBar = () => {
       <NavLink
         to="/stocks"
         className={({ isActive }) => (isActive ? `${styles.navItem} ${styles.active}` : styles.navItem)}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       >
         <FaChartLine />
         <span>Stocks</span>

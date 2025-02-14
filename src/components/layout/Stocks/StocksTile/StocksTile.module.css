@@ -42,13 +42,13 @@
 
 .name{
     font-size: 1rem;
-    /* display: -webkit-box; 
+    display: -webkit-box; 
     -webkit-line-clamp: 1;  
     -webkit-box-orient: vertical; 
     overflow: hidden; 
     text-overflow: ellipsis;
-    max-width: 80%; 
-    word-wrap: break-word;  */
+    max-width: 100%; 
+    word-wrap: break-word; 
 }
 
 .size{
