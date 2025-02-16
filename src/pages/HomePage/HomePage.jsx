@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <>
       <header className={styles.header}>
-        <h1>Analyse companies worth  <br></br> investing for a decade or more.</h1>
+        <h1>For Stock Analysis</h1>
         <p>Just a heads up: </p>
         <br></br>
         <ul>

@@ -10,9 +10,9 @@ const data = {
     "title": "MICROSOFT CORP"
   },
   "2": {
-    "cik_str": 1045810,
-    "ticker": "NVDA",
-    "title": "NVIDIA CORP"
+    "cik_str": 831001,
+    "ticker": "C",
+    "title": "CITIGROUP INC"
   },
   "3": {
     "cik_str": 1018724,
@@ -410,9 +410,9 @@ const data = {
     "title": "STRYKER CORP"
   },
   "82": {
-    "cik_str": 831001,
-    "ticker": "C",
-    "title": "CITIGROUP INC"
+    "cik_str": 1045810,
+    "ticker": "NVDA",
+    "title": "NVIDIA CORP"
   },
   "83": {
     "cik_str": 100885,
