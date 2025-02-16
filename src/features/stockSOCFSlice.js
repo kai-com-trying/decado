@@ -18,8 +18,8 @@ export const fetchSOCF = createAsyncThunk(
             const response = await axios.get('https://www.alphavantage.co/query', {
                 params: {
                     function: 'CASH_FLOW',
-                    symbol: symbol,
-                    apikey: AVApiKey,
+                    symbol: 'IBM',
+                    apikey: 'demo',
                 },
             });
             if (!response.data) {
