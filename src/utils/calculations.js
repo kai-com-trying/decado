@@ -40,8 +40,10 @@ export const formatLargeNumber = (value) => {
 
   if (isNaN(num)) return "N/A"; // Handle invalid numbers
 
-  if (num >= 1_000_000_000) {
+  if (num >= 1_000_000_000 ) {
     return `$${(num / 1_000_000).toLocaleString()} mil.`; // Convert billion to million
+  } else if (num <- -1_000_000_000) {
+    return `-$${(-num / 1_000_000).toLocaleString()} mil.`;
   }
 
   return num.toLocaleString(); // Default formatting

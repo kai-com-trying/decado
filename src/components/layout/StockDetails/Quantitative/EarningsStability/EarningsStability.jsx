@@ -2,31 +2,25 @@ import React from 'react';
 import mainStyles from '../../../../../pages/StockDetailPage/StockDetail.module.css';
 import styles from './EarningsStability.module.css';
 import { formatLargeNumber } from '../../../../../utils/calculations';
+import { Outlet } from 'react-router-dom';
+import EarningsChart from '../../../Charts/Earnings Chart/EarningsChart';
 
 const EarningsStability = ({earningsHistory, declineGrowthPercentage, declineEPSPercentage, negativeNetIncomePercentage}) => {
-  /*
-  {earningsHistory.map((item, index) => (
-    <tr key={index}>
-      <td>{item.year}</td>
-      <td>{item.netIncome}</td>
-      <td>growth</td>
-      <td>{item.eps}</td>
-      <td>{item.prev3YAvg}</td>
-    </tr>
-  ))}
-  */
 
   return (
     <div className={`${styles.earningsStability} ${mainStyles.content}`}>
       <h3>Earnings Stability</h3>
+      <EarningsChart earningsHistory={earningsHistory} />
+      <br></br><br></br>
       <div className={styles.earningsStabilityContent}>
         <div className={styles.leftContent}>
           <table className={styles.table}>
             <thead>
               <tr>
                 <th>Year</th>
+                <th>Revenue</th>
                 <th>Net Income</th>
-                <th>Net Income Growth</th>
+                
                 <th>EPS</th>
                 <th>Prev. 3Y AVG</th>
               </tr>
@@ -35,15 +29,25 @@ const EarningsStability = ({earningsHistory, declineGrowthPercentage, declineEPS
             {earningsHistory.slice(0, 10).map((item, index) => (
               <tr key={index}>
                 <td>{item.year}</td>
-                <td>{formatLargeNumber(item.netIncome)}</td>
-                <td 
-                  style={{ 
-                    color: item.growthNumber != null && !isNaN(item.growthNumber) 
-                    ? (item.growthNumber > 0 ? 'green' : 'red')
+                <td>
+                  {formatLargeNumber(item.revenue)}
+                  <br></br>
+                  <span style={{
+                    color: item.revGrowthNumber != null && !isNaN(item.revGrowthNumber)
+                    ? (item.revGrowthNumber > 0 ? '#3cb37190' : '#ff000090')
                     : null // Default (no color) for missing values
-                  }}
-                  className={styles.number}
-                >{item.growth}</td>
+                  }}>{item.revGrowth}</span>
+                </td>
+                <td>
+                  {formatLargeNumber(item.netIncome)}
+                  <br></br>
+                    <span style={{ 
+                      color: item.growthNumber != null && !isNaN(item.growthNumber) 
+                      ? (item.growthNumber > 0 ? '#3cb37190' : '#ff000090')
+                      : null // Default (no color) for missing values
+                    }}>{item.growth}
+                    </span>
+                  </td>
                 <td 
                   className={styles.number}
                   style={{

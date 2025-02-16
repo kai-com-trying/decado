@@ -12,7 +12,7 @@ import ErrorBoundary from './components/ErrorBoundary'
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<Root />} >
     <Route index element={<HomePage />} />
-    <Route path="frameworks" element={<FrameworksPage />} />
+    {/* <Route path="frameworks" element={<FrameworksPage />} /> */}
     <Route path="stocks" element={<StocksPage />} />
     <Route path='stocks/:ticker' element={
       <ErrorBoundary>

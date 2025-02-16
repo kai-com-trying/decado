@@ -7,6 +7,19 @@
     height: 200px;
 }
 
+.disclaimer{
+    font-weight: 800;
+}
+
+.link{
+    text-decoration: underline;
+    color: #5495ff !important; 
+}
+
+.link:hover{
+    color: #092635 !important;
+}
+
 .details{
     display: flex;
     height: 100%;

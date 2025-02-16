@@ -1,8 +1,9 @@
 import React from 'react';
 import mainStyles from '../../../../../pages/StockDetailPage/StockDetail.module.css';
 import styles from './GrowthAndPe.module.css';
+import GrowthChart from '../../../Charts/GrowthChart/GrowthChart';
 
-const GrowthAndPe = ({growthOfCompany, threeYearEPS, price, lastThreeYears, lastDecadeThreeYears, lastYear, threeYearsAgo, decadeAgo, decadeThreeYearsAgo}) => {
+const GrowthAndPe = ({growthOfCompany, threeYearEPS, price, lastThreeYears, lastDecadeThreeYears, lastYear, threeYearsAgo, decadeAgo, decadeThreeYearsAgo, netIncomeGrowth}) => {
 
   const pe = (price / threeYearEPS).toFixed(2);
 
@@ -15,32 +16,19 @@ const GrowthAndPe = ({growthOfCompany, threeYearEPS, price, lastThreeYears, last
       <div className={styles.growthAndPeContent}>
         <div className={styles.row}>
           <div className={styles.criteria}>
-            <span>Growth of EPS from {threeYearsAgo} to {lastYear}</span>
+            <span>Growth of EPS from {decadeThreeYearsAgo}-{decadeAgo} to {threeYearsAgo}-{lastYear} </span>
           </div>
           <span className={styles.figure}>{growthOfCompany}</span>
         </div>
         <hr />
         <div className={styles.row}>
           <div className={styles.criteria}>
-            <span>P/E for {decadeThreeYearsAgo} to {decadeAgo}</span>
+            <span>P/E for {threeYearsAgo} to {lastYear}</span>
           </div>
           <span className={styles.figure}>${pe}</span>
         </div>
         <hr />
-        {/* <div className={styles.row}>
-          <div className={styles.criteria}>
-            <span>Comparison of P/E to 2022-2024 growth</span>
-          </div>
-          <span className={styles.figure}>Value</span>
-        </div>
-        <hr />
-        <div className={styles.row}>
-          <div className={styles.criteria}>
-            <span>Comparison of P/E to next 5-year growth (PEG)</span>
-          </div>
-          <span className={styles.figure}>Value</span>
-        </div>
-        <hr /> */}
+        <GrowthChart netIncomeGrowth={netIncomeGrowth} />
       </div>
     </div>)
 };

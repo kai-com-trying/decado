@@ -13,6 +13,7 @@ import GrowthAndPe from '../../components/layout/StockDetails/Quantitative/Growt
 import FinancialPosition from '../../components/layout/StockDetails/Quantitative/FinancialPosition/FinancialPosition';
 import styles from './StockDetail.module.css';
 import { calculateEPS, calculateBVPS, calculateROE, calculateROIC, calculateNYearAverage, formatLargeNumber } from '../../utils/calculations';
+import ProfitabilityChart from '../../components/layout/Charts/ProfitabilityChart/ProfitabilityChart';
 
 const StockDetail = () => {
   const { ticker } = useParams()
@@ -61,6 +62,18 @@ const StockDetail = () => {
     });
   }, [socf, sofp, sopl]); 
 
+  // ROIC and ROE chart
+  const profitChartData = mergedData.map((report, index) => {
+    const netIncome = report.netIncome;
+    const liabilities = report.totalLiabilities;
+    const equity = report.totalShareholderEquity;
+    const year = report.fiscalDateEnding;
+    const roic = calculateROIC(netIncome, liabilities, equity) * 100;
+    const roe = calculateROE(netIncome, equity) * 100;
+    return { year, roic, roe };
+  }).reverse();
+
+  console.log(profitChartData)
   //5 Year Calculations:
 
   const fiveYearNetIncome = calculateNYearAverage(mergedData, 'netIncome', 5);
@@ -82,6 +95,7 @@ const StockDetail = () => {
   //Earnings Stability:
   const earningsHistory = mergedData.slice(0, 10).map((report, index) => {
     const netIncome = report.netIncome;
+    const revenue = report.totalRevenue;
     const sharesOutstanding = report.commonStockSharesOutstanding;
     const year = report.fiscalDateEnding;
     const eps = parseFloat(calculateEPS(netIncome, sharesOutstanding).toFixed(2));
@@ -96,6 +110,19 @@ const StockDetail = () => {
           growth = growthNumber >= 0 ? `+${growthNumber.toFixed(2)}%` : `${growthNumber.toFixed(2)}%`;
       } else {
           growth = "N/A";
+      }
+    }
+
+    let revGrowthNumber;
+    let revGrowth = "-";
+    if (index < 9) {  // Since we're slicing to 10 items, this ensures we're within range
+      const prevYearRevenue = parseFloat(mergedData[index + 1]?.totalRevenue) || 0;
+      
+      if (prevYearRevenue !== 0) {  // Avoid division by zero but allow negative values
+          revGrowthNumber = (((revenue - prevYearRevenue) / prevYearRevenue) * 100);
+          revGrowth = revGrowthNumber >= 0 ? `+${revGrowthNumber.toFixed(2)}%` : `${revGrowthNumber.toFixed(2)}%`;
+      } else {
+          revGrowth = "N/A";
       }
     }
 
@@ -115,7 +142,7 @@ const StockDetail = () => {
     
     const roundedPrev3yEpsAvg = prev3yEpsAvg ? prev3yEpsAvg.toFixed(2) : "-";
 
-    return { year, netIncome, eps, growth, prev3yEpsAvg, growthNumber, roundedPrev3yEpsAvg };
+    return { year, revenue, revGrowth, revGrowthNumber, netIncome, eps, growth, prev3yEpsAvg, growthNumber, roundedPrev3yEpsAvg };
   }); 
 
   const growthLength = earningsHistory.filter(item => typeof(item.growthNumber) === "number").length;
@@ -140,10 +167,18 @@ const StockDetail = () => {
   const threeYearsAgo = mergedData[2]?.fiscalDateEnding ? new Date(mergedData[2].fiscalDateEnding).getFullYear() : "N/A";
   const decadeAgo = mergedData[10]?.fiscalDateEnding ? new Date(mergedData[10].fiscalDateEnding).getFullYear() : "N/A";
   const decadeThreeYearsAgo = mergedData[12]?.fiscalDateEnding ? new Date(mergedData[12].fiscalDateEnding).getFullYear() : "N/A";
-  console.log(lastYear, threeYearsAgo, decadeAgo, decadeThreeYearsAgo)
   const lastDecadeThreeYearEPS = calculateEPS(lastDecadeThreeYearNetIncome, lastDecadeThreeYearSharesOutstanding);
 
   const growthOfCompany = (((lastThreeYearEPS - lastDecadeThreeYearEPS) / lastDecadeThreeYearEPS) * 100).toFixed(2) + "%";
+
+  const netIncomeGrowth = mergedData.map((report, index) => {
+    const netIncome = report.netIncome;
+    const year = report.fiscalDateEnding;
+    const prevYearNetIncome = mergedData[index + 1]?.netIncome || 0;
+    const growthNumber = (((netIncome - prevYearNetIncome) / prevYearNetIncome) * 100);
+    const growth = growthNumber >= 0 ? `+${growthNumber.toFixed(2)}%` : `${growthNumber.toFixed(2)}%`;
+    return { year, netIncome, growth, growthNumber };
+  });
 
   //Financial Position:
   const fiveYearFinancialCondition = mergedData.slice(0,5).map((report) => {
@@ -193,6 +228,7 @@ const StockDetail = () => {
           fiveYearBVPS={fiveYearBVPS}
           fiveYearROE={fiveYearROE}
           fiveYearROIC={fiveYearROIC}
+          profitChartData={profitChartData}
         />
         <EarningsStability
           earningsHistory={earningsHistory}
@@ -208,6 +244,7 @@ const StockDetail = () => {
           threeYearsAgo={threeYearsAgo}
           decadeAgo={decadeAgo}
           decadeThreeYearsAgo={decadeThreeYearsAgo}
+          netIncomeGrowth={netIncomeGrowth}
         />
         <FinancialPosition
           avgCACL={avgCACL}

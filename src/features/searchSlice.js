@@ -17,8 +17,8 @@ export const fetchSearchResults = createAsyncThunk(
       const response = await axios.get('https://www.alphavantage.co/query', {
         params: {
           function: 'SYMBOL_SEARCH',
-          keywords: 'tencent',
-          apikey: 'demo'
+          keywords: searchQuery,
+          apikey: apiKey,
         }
       });
 

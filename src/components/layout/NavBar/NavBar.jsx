@@ -14,14 +14,14 @@ const NavBar = () => {
         <FaHome />
         <span>Home</span>
       </NavLink>
-      <NavLink
+      {/* <NavLink
         to="/frameworks"
         className={({ isActive }) => (isActive ? `${styles.navItem} ${styles.active}` : styles.navItem)}
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       >
         <FaCubes />
         <span>Frameworks</span>
-      </NavLink>
+      </NavLink> */}
       <NavLink
         to="/stocks"
         className={({ isActive }) => (isActive ? `${styles.navItem} ${styles.active}` : styles.navItem)}

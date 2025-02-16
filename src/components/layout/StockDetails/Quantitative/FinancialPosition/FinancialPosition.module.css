@@ -1,14 +1,19 @@
-.financialPositionContent .cacl {
+.financialPositionContent {
+    display: flex;
+
+}
+
+.caclText {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 30px auto;
     text-align: center;
-    width: 50%;
+    width: 100%;
 }
 
-.financialPositionContent .cacl .left,
-.financialPositionContent .cacl .right {
+.left,
+.right {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -17,7 +22,7 @@
     text-align: center;
 }
 
-.financialPositionContent .cacl .center {
+.center {
     display: flex;
     align-items: center;
     justify-content: center;

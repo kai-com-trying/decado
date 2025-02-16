@@ -7,7 +7,7 @@ import styles from './StocksPage.module.css'
 const StocksPage = () => {
   return (
     <div className={styles.content}>
-      <SearchStocksBar />
+      {/* <SearchStocksBar /> */}
       <StocksList />
     </div>
   )
