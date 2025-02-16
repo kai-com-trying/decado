@@ -8,6 +8,10 @@
     line-height: 1.5 !important;
 }
 
+.title {
+    margin: 0;
+}
+
 .disclaimer{
     font-weight: 800;
 }
