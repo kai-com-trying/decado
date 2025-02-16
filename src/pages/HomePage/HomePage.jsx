@@ -15,7 +15,7 @@ const HomePage = () => {
         <ul>
           <li>⚠️Some companies are not 10 years or older, pages may not load</li>
           <li>⚠️There are certain flaws in calculations for edge cases for now</li>
-          <li>⚠️There is a limit on this app, you may face error after looking through about 4 companies</li>
+          <li>⚠️If you face an error, you may have reached maximum usage, try again the next day after 12pm</li>
           <li>⚠️The search bar is still in development, thank you for your patience</li>
         </ul>
 
