@@ -8,14 +8,14 @@ import { Link } from 'react-router-dom';
 import { stockArray } from '../../../../api/secData'
 
 const StocksList = () => {
-    const [n, setN] = useState(31);
+    const [n, setN] = useState(30);
     const dispatch = useDispatch()
     
     // useEffect(() => {
     //     dispatch(fetchStocks())
     // }, [dispatch])
 
-    const searchResult = useSelector((state) => state.search.searchResults);
+    const searchQuery = useSelector((state) => state.search.searchQuery);
     
     // useEffect(() => {
     //     console.log(searchResult)
@@ -44,7 +44,13 @@ const StocksList = () => {
         setN(31);
     };
 
-    const displayStock = searchResult.length > 0 ? searchResult : stockArray.slice(1, n);
+    const filteredArray = stockArray.filter((stock) =>
+        stock.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        stock.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    const searchResult = filteredArray.slice(0, n);
+
+    const displayStock = searchQuery.length > 0 ? searchResult : stockArray.slice(0, n);
 
     return (
         <div>
@@ -56,8 +62,16 @@ const StocksList = () => {
                 ))}
             </div>
             <div className={styles.button}>
-                <button onClick={compress}>Compress</button>
-                <button onClick={addSlice}>Load More...</button>
+                <button 
+                    onClick={compress}
+                    style={{display: displayStock.length > 30 ? 'block' : 'none'}}
+                >Compress
+                </button>
+                <button 
+                    onClick={addSlice}
+                    style={{display: displayStock.length >= 30 ? 'block' : 'none'}}
+                >Load More...
+                </button>
             </div>
         </div>
     )

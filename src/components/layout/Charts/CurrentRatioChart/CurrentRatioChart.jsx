@@ -10,9 +10,9 @@ ChartJS.register(
     ArcElement
 )
 
-const CurrentRatioChart = ({avgCACL}) => {
-    const currentAssetProportion = (avgCACL/(1+avgCACL)) * 100;
-    const currentLiabilityProportion = (1/(1+avgCACL)) * 100;
+const CurrentRatioChart = ({cacl}) => {
+    const currentAssetProportion = (cacl/(1+cacl)) * 100;
+    const currentLiabilityProportion = (1/(1+cacl)) * 100;
 
     const options = {
         responsive: true,

@@ -1,3 +1,7 @@
+.searchArea {
+    margin: 120px 0px 40px 0px;
+}
+
 .searchForm{
     display: flex;
     justify-content: center;

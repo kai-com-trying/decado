@@ -52,7 +52,13 @@ export const fetchSOFP = createAsyncThunk(
 const stockSOFPSlice = createSlice({
     name: 'sofp',
     initialState,
-    reducers: {},
+    reducers: {
+        resetSOFP: (state) => {
+            state.sofp = [];
+            state.loading = null;
+            state.error = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchSOFP.pending, (state) => {
@@ -71,4 +77,5 @@ const stockSOFPSlice = createSlice({
     },
 });
 
+export const { resetSOFP } = stockSOFPSlice.actions;
 export default stockSOFPSlice.reducer;

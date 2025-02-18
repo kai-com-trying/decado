@@ -2,14 +2,14 @@ import React from 'react';
 import mainStyles from '../../../../pages/StockDetailPage/StockDetail.module.css';
 import styles from './StockHeader.module.css';
 
-const StockHeader = ({ stockDetail, price, threeYearEPS }) => {
+const StockHeader = ({ stockDetail, price }) => {
 
   
   const marketCap = stockDetail.MarketCapitalization
   const formattedIndustry = stockDetail.Industry ? stockDetail.Industry.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) : "N/A";
   const conditionalSite = stockDetail.OfficialSite ? stockDetail.OfficialSite : "N/A";
 
-  const pe = (price / threeYearEPS).toFixed(2);
+  const pe = stockDetail.TrailingPE;
 
   return (
     <div className={styles.header}>
@@ -22,7 +22,7 @@ const StockHeader = ({ stockDetail, price, threeYearEPS }) => {
         <p>If the page doesn't show the correct company, please refresh</p>
       </div>
       <div className={styles.details}>
-        <h3 className={styles.PE}>P/E<sub>3Y</sub>: <span style={{ color: pe <= 15 ? 'green' : pe <= 25 ? '#717a00' : 'red' }}>{pe}</span></h3>
+        <h3 className={styles.PE}>P/E<sub>TTM</sub>: <span style={{ color: pe <= 15 ? 'green' : pe <= 25 ? '#717a00' : 'red' }}>{pe}</span></h3>
       </div>
     </div>
   )

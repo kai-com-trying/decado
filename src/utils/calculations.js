@@ -9,7 +9,7 @@ export const calculateEPS = (netIncome, sharesOutstanding) => {
   };
   
   export const calculateROE = (netIncome, totalEquity) => {
-    if (!totalEquity || totalEquity <= 0) return 0;
+    if (!totalEquity || totalEquity <= 0 || (netIncome <= 0 && totalEquity<= 0)) return "N/A";
     return netIncome / totalEquity; // Returns negative value if net income is negative
   };
   
@@ -21,10 +21,10 @@ export const calculateEPS = (netIncome, sharesOutstanding) => {
 
 
 export const calculateNYearAverage = (annualReports, key, n) => {
-  if (!annualReports || annualReports.length < n) return 0;
+  if (!annualReports || annualReports.length < n) return "Not enough data";
 
   // Get the last 3 years of data
-  const lastNYears = annualReports.slice(0, n); // Assuming data is sorted in descending order
+  const lastNYears = annualReports.slice(0, n - 1); // Assuming data is sorted in descending order
 
   // Extract the values for the given key and convert to numbers
   const values = lastNYears.map(report => Number(report[key]) || 0);

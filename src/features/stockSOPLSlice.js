@@ -53,7 +53,13 @@ export const fetchSOPL = createAsyncThunk(
 const stockSOPLSlice = createSlice({
     name: 'sopl',
     initialState,
-    reducers: {},
+    reducers: {
+        resetSOPL: (state) => {
+            state.sopl = [];
+            state.loading = null;
+            state.error = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchSOPL.pending, (state) => {
@@ -72,4 +78,5 @@ const stockSOPLSlice = createSlice({
     },
 });
 
+export const { resetSOPL } = stockSOPLSlice.actions;
 export default stockSOPLSlice.reducer;

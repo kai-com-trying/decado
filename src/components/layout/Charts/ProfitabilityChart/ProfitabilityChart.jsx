@@ -24,7 +24,6 @@ import {
 
 
  const ProfitabilityChart = ({profitChartData}) => {
-    console.log(profitChartData)
     const options = {
         responsive: true,
         plugins: {
@@ -41,7 +40,7 @@ import {
                 grid: {
                     drawOnChartArea: true
                 },
-                position: 'left'
+                position: 'right'
             },
             y2: {
                 title: {
@@ -51,7 +50,7 @@ import {
                 grid: {
                     drawOnChartArea: false
                 },
-                position: 'right'
+                position: 'left'
             }
         }
     };

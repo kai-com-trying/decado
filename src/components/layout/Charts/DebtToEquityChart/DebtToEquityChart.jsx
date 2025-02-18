@@ -10,9 +10,9 @@ ChartJS.register(
     ArcElement
 )
 
-const DebtToEquityChart = ({avgDebtToEquity}) => {
-    const debtProportion = (avgDebtToEquity/(1+avgDebtToEquity)) * 100;
-    const equityProportion = (1/(1+avgDebtToEquity)) * 100;
+const DebtToEquityChart = ({debtToEquity}) => {
+    const debtProportion = (debtToEquity/(1+debtToEquity)) * 100;
+    const equityProportion = (1/(1+debtToEquity)) * 100;
 
     const options = {
         responsive: true,

@@ -42,7 +42,13 @@ export const fetchStockPrice = createAsyncThunk(
 const stockPriceSlice = createSlice({
     name: 'stockPrice',
     initialState,
-    reducers: {},
+    reducers: {
+        resetStockPrice: (state) => {
+            state.sopl = {};
+            state.loading = null;
+            state.error = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchStockPrice.pending, (state) => {
@@ -61,4 +67,5 @@ const stockPriceSlice = createSlice({
     },
 });
 
+export const { resetStockPrice } = stockPriceSlice.actions;
 export default stockPriceSlice.reducer;
